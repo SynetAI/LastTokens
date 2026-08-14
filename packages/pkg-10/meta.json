@@ -1,0 +1,11 @@
+{
+  "pluginId": "apim-1",
+  "packageId": "pkg-10",
+  "name": "API 余额与任务消耗仪表盘 v7.2",
+  "purpose": "v7.1：修复悬浮球拖到网页最上端时展开面板被视口上方遮住、头部拖拽把手不可见的问题（中心锚点视口钳制 + 二次钳制 + 区间反转退化居中）。v7.2：机甲/赛博主题全面重设计——机甲「钛金装甲·能量核心」（枪灰装甲板 + 橙色等离子能量、钢制螺栓、能量导管流光、能量槽扫光）、赛博「霓虹终端·数据流」（三色数据环悬浮球、2×2 HUD 磁贴、点阵 + 透视网格、扫描光束、能量槽），赛博新增能量槽，主题选择持久化到 localStorage。",
+  "hasHostHalf": true,
+  "hasClientHalf": true,
+  "hostFile": "host.js",
+  "clientFile": "client.js",
+  "howToRebuild": "将 host.js 内容作为 cordis_define 的 code.host，client.js 内容作为 code.client，plugin.kind 为 existing + pluginId=apim-1 追加新版本；或 kind=new + idPrefix 创建全新插件。定义后调用 cordis_run（切换版本用 mode:'update'），并在运行卡片批准 Client 半。"
+}

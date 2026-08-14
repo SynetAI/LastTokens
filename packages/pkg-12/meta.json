@@ -1,0 +1,17 @@
+{
+  "pluginId": "apim-1",
+  "packageId": "pkg-12",
+  "name": "API 余额与任务消耗仪表盘 v7.2.1",
+  "purpose": "v7.2.1：极光/果冻主题悬浮球移除多余的外层光环（::before display:none），机甲/赛博保留各自装甲环/数据环。",
+  "hasHostHalf": true,
+  "hasClientHalf": true,
+  "hostFile": "host.js",
+  "clientFile": "client.js",
+  "howToRebuild": "将 host.js 内容作为 cordis_define 的 code.host，client.js 内容作为 code.client，plugin.kind 为 existing + pluginId=apim-1 追加新版本；或 kind=new + idPrefix 创建全新插件。定义后调用 cordis_run（切换版本用 mode:'update'），并在运行卡片批准 Client 半。",
+  "themes": [
+    { "id": "aurora", "name": "极光 Aurora", "desc": "青紫玻璃 · 流光" },
+    { "id": "gilded", "name": "机甲 Mecha", "desc": "钛金装甲 · 能量核心" },
+    { "id": "cyber", "name": "赛博 Cyber", "desc": "霓虹终端 · 数据流" },
+    { "id": "mochi", "name": "果冻 Mochi", "desc": "粉蓝果冻 · 软萌" }
+  ]
+}
