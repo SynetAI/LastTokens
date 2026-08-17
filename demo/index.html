@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>apim-1 主题重设计 · 预览（机甲 / 赛博）</title>
+<title>apim-1 主题重设计 · 预览（机甲 / 赛博 · v7.3 消耗统计）</title>
 <link rel="stylesheet" href="demo.css">
 <style>
   body{margin:0;min-height:100vh;background:#0b0e13 radial-gradient(1200px 600px at 75% 0%,#131a24,transparent);font-family:system-ui,-apple-system,'Segoe UI',Roboto,'PingFang SC','Microsoft YaHei',sans-serif}
@@ -170,11 +170,14 @@
     </div>
 
     <div class="dsm-toolbar">
-      <span class="dsm-toolbar-title">
+      <span class="dsm-toolbar-title" id="demoToolbarTitle">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2 2 7l10 5 10-5-10-5zM2 12l10 5 10-5M2 17l10 5 10-5"/></svg>
         <span>任务记录</span>
       </span>
-      <button class="dsm-minibtn">仅本会话</button>
+      <button class="dsm-minibtn on" data-view="records">记录</button>
+      <button class="dsm-minibtn" data-view="hours">小时</button>
+      <button class="dsm-minibtn" data-view="days">日</button>
+      <button class="dsm-minibtn" id="demoOnlySession">仅本会话</button>
       <button class="dsm-minibtn on">价格</button>
       <button class="dsm-minibtn">收起</button>
     </div>
@@ -190,25 +193,39 @@
     </div>
 
     <div class="dsm-scroll">
-      <div class="dsm-row dsm-row-ok">
-        <div class="dsm-row-top"><span class="dsm-row-time">14:23:07</span><span class="dsm-model">v4-pro</span><span class="dsm-purpose">对话</span><span class="dsm-row-cost">≈¥0.183</span></div>
-        <div class="dsm-row-sub"><span>in 2.4k</span><span>out 1.1k</span><span class="dsm-cache-hit">缓存 6.8k</span><span>3.2s</span><span class="dsm-state dsm-state-ok">✓</span></div>
+      <div id="view-records">
+        <div class="dsm-row dsm-row-ok">
+          <div class="dsm-row-top"><span class="dsm-row-time">14:23:07</span><span class="dsm-model">v4-pro</span><span class="dsm-purpose">对话</span><span class="dsm-row-cost">≈¥0.183</span></div>
+          <div class="dsm-row-sub"><span>in 2.4k</span><span>out 1.1k</span><span class="dsm-cache-hit">缓存 6.8k</span><span class="dsm-row-price" title="本记录所用单价：输入/缓存/输出（元/百万tokens）">价 3/0.3/6</span><span>3.2s</span><span class="dsm-state dsm-state-ok">✓</span></div>
+        </div>
+        <div class="dsm-row dsm-row-ok">
+          <div class="dsm-row-top"><span class="dsm-row-time">14:20:41</span><span class="dsm-model">v4-pro</span><span class="dsm-purpose">压缩</span><span class="dsm-row-cost">≈¥0.312</span></div>
+          <div class="dsm-row-sub"><span>in 18.6k</span><span>out 2.2k</span><span class="dsm-cache-hit">缓存 1.2k</span><span class="dsm-row-price">价 3/0.3/6</span><span>6.8s</span><span class="dsm-state dsm-state-ok">✓</span></div>
+        </div>
+        <div class="dsm-row dsm-row-ok">
+          <div class="dsm-row-top"><span class="dsm-row-time">14:16:52</span><span class="dsm-model">v4-flash</span><span class="dsm-purpose">标题</span><span class="dsm-row-cost">≈¥0.004</span></div>
+          <div class="dsm-row-sub"><span>in 1.1k</span><span>out 28</span><span class="dsm-cache-hit">缓存 0</span><span class="dsm-row-price">价 1/0.1/2</span><span>0.4s</span><span class="dsm-state dsm-state-ok">✓</span></div>
+        </div>
+        <div class="dsm-row dsm-row-warn">
+          <div class="dsm-row-top"><span class="dsm-row-time">14:13:20</span><span class="dsm-model">v4-pro</span><span class="dsm-purpose">对话</span><span class="dsm-row-cost">≈¥0.000</span></div>
+          <div class="dsm-row-sub"><span>in 3.0k</span><span>out 0</span><span class="dsm-cache-hit">缓存 0</span><span class="dsm-row-price">价 3/0.3/6</span><span>1.9s</span><span class="dsm-state dsm-state-warn">⏹</span></div>
+        </div>
+        <div class="dsm-row dsm-row-err">
+          <div class="dsm-row-top"><span class="dsm-row-time">14:10:05</span><span class="dsm-model">v4-pro</span><span class="dsm-purpose">对话</span><span class="dsm-row-cost">≈¥0.000</span></div>
+          <div class="dsm-row-sub"><span>in 0</span><span>out 0</span><span class="dsm-cache-hit">缓存 0</span><span class="dsm-row-price">价 3/0.3/6</span><span>0.3s</span><span class="dsm-state dsm-state-err">✗</span></div>
+        </div>
       </div>
-      <div class="dsm-row dsm-row-ok">
-        <div class="dsm-row-top"><span class="dsm-row-time">14:20:41</span><span class="dsm-model">v4-pro</span><span class="dsm-purpose">压缩</span><span class="dsm-row-cost">≈¥0.312</span></div>
-        <div class="dsm-row-sub"><span>in 18.6k</span><span>out 2.2k</span><span class="dsm-cache-hit">缓存 1.2k</span><span>6.8s</span><span class="dsm-state dsm-state-ok">✓</span></div>
+
+      <div id="view-hours" style="display:none">
+        <div class="dsm-agg-chart"><svg class="dsm-chart" id="hoursBars" viewBox="0 0 120 52" preserveAspectRatio="none"></svg></div>
+        <div class="dsm-agg-total" id="hoursTotal"></div>
+        <div id="hoursRows"></div>
       </div>
-      <div class="dsm-row dsm-row-ok">
-        <div class="dsm-row-top"><span class="dsm-row-time">14:16:52</span><span class="dsm-model">v4-flash</span><span class="dsm-purpose">标题</span><span class="dsm-row-cost">≈¥0.004</span></div>
-        <div class="dsm-row-sub"><span>in 1.1k</span><span>out 28</span><span class="dsm-cache-hit">缓存 0</span><span>0.4s</span><span class="dsm-state dsm-state-ok">✓</span></div>
-      </div>
-      <div class="dsm-row dsm-row-warn">
-        <div class="dsm-row-top"><span class="dsm-row-time">14:13:20</span><span class="dsm-model">v4-pro</span><span class="dsm-purpose">对话</span><span class="dsm-row-cost">≈¥0.000</span></div>
-        <div class="dsm-row-sub"><span>in 3.0k</span><span>out 0</span><span class="dsm-cache-hit">缓存 0</span><span>1.9s</span><span class="dsm-state dsm-state-warn">⏹</span></div>
-      </div>
-      <div class="dsm-row dsm-row-err">
-        <div class="dsm-row-top"><span class="dsm-row-time">14:10:05</span><span class="dsm-model">v4-pro</span><span class="dsm-purpose">对话</span><span class="dsm-row-cost">≈¥0.000</span></div>
-        <div class="dsm-row-sub"><span>in 0</span><span>out 0</span><span class="dsm-cache-hit">缓存 0</span><span>0.3s</span><span class="dsm-state dsm-state-err">✗</span></div>
+
+      <div id="view-days" style="display:none">
+        <div class="dsm-agg-chart"><svg class="dsm-chart" id="daysBars" viewBox="0 0 120 52" preserveAspectRatio="none"></svg></div>
+        <div class="dsm-agg-total" id="daysTotal"></div>
+        <div id="daysRows"></div>
       </div>
     </div>
 
@@ -222,8 +239,9 @@
 </div>
 
 <div class="demo-note">
-  <b>apim-1 主题重设计预览</b>：左侧悬浮球 + 右侧面板与插件内完全同一套 CSS（自动从 client.js 提取）。
-  用左上角按钮或面板内 🎨 主题选择器切换四主题；机甲/赛博显示能量槽，其余主题隐藏，与插件 JS 行为一致。
+  <b>apim-1 v7.3 预览</b>：左侧悬浮球 + 右侧面板与插件内完全同一套 CSS（自动从 client.js 提取）。
+  用左上角按钮或面板内 🎨 切换四主题；「记录 / 小时 / 日」切换消耗统计视图（v7.3 新功能演示，
+  静态假数据），每条记录副行显示所用单价。
 </div>
 
 <script>
@@ -238,8 +256,7 @@
 
   function setTheme(t) {
     if (THEMES.indexOf(t) < 0) return
-    var targets = [panel, fab]
-    targets.forEach(function (el) {
+    ;[panel, fab].forEach(function (el) {
       THEMES.forEach(function (x) { el.classList.remove('dsm-theme-' + x) })
       el.classList.add('dsm-theme-' + t)
     })
@@ -257,10 +274,94 @@
     try { localStorage.setItem('dsm-theme', t) } catch (e) {}
   }
 
+  // ── v7.3 演示：小时/日聚合（静态假数据） ──
+  function fmtShort(n) {
+    var v = Number(n || 0)
+    if (v >= 1e6) return (v / 1e6).toFixed(1) + 'M'
+    if (v >= 1e3) return (v / 1e3).toFixed(1) + 'k'
+    return String(Math.round(v))
+  }
+  function fmtCost(c) {
+    var v = Number(c || 0)
+    if (v === 0) return '0'
+    if (v < 0.01) return v.toFixed(4)
+    if (v < 1) return v.toFixed(3)
+    return v.toFixed(2)
+  }
+  function bars(items, svg) {
+    var slot = 120 / Math.max(1, items.length)
+    var bw = Math.max(2, Math.min(5, slot - 1.5))
+    var max = 0.000001
+    items.forEach(function (a) { max = Math.max(max, Number(a.cost || 0)) })
+    var ns = 'http://www.w3.org/2000/svg'
+    items.forEach(function (a, i) {
+      var h = Math.max(1.5, (Number(a.cost || 0) / max) * 44)
+      var x = i * slot + (slot - bw) / 2
+      var g = document.createElementNS(ns, 'g')
+      var r = document.createElementNS(ns, 'rect')
+      r.setAttribute('x', x.toFixed(2)); r.setAttribute('y', (50 - h).toFixed(1))
+      r.setAttribute('width', bw.toFixed(2)); r.setAttribute('height', h.toFixed(1))
+      r.setAttribute('rx', '1.5'); r.setAttribute('fill', 'url(#dsmBarGrad)')
+      r.setAttribute('class', 'dsm-bar')
+      r.setAttribute('opacity', (0.4 + 0.6 * (Number(a.cost || 0) / max)).toFixed(2))
+      var tt = document.createElementNS(ns, 'title')
+      tt.textContent = a.label + '  ≈¥' + fmtCost(a.cost)
+      g.appendChild(r); g.appendChild(tt); svg.appendChild(g)
+    })
+  }
+  function aggRow(a) {
+    var div = document.createElement('div')
+    div.className = 'dsm-row' + (Number(a.cost) > 0 ? ' dsm-row-ok' : '')
+    var top = '<div class="dsm-row-top"><span class="dsm-row-time">' + a.label + '</span><span class="dsm-purpose">调用 ' + a.calls + '</span><span class="dsm-row-cost">≈¥' + fmtCost(a.cost) + '</span></div>'
+    var sub = '<div class="dsm-row-sub"><span>in ' + fmtShort(a.in) + '</span><span>out ' + fmtShort(a.out) + '</span><span class="dsm-cache-hit">缓存 ' + fmtShort(a.hit) + '</span><span>tokens ' + fmtShort(a.in + a.out + a.hit) + '</span></div>'
+    div.innerHTML = top + sub
+    return div
+  }
+  function aggTotal(arr, el) {
+    var calls = 0, cost = 0
+    arr.forEach(function (a) { calls += a.calls; cost += Number(a.cost || 0) })
+    el.innerHTML = '<span>区间合计 ' + calls + ' 次调用</span><span>tokens ' + fmtShort(arr.reduce(function (s, a) { return s + a.in + a.out + a.hit }, 0)) + '</span><span><b>≈¥' + fmtCost(cost) + '</b></span>'
+  }
+  ;(function buildAgg() {
+    var hours = []
+    for (var h = 0; h < 24; h++) {
+      var act = [9, 10, 11, 14, 15, 16].indexOf(h) >= 0
+      hours.push({ key: 'H' + h, label: ('0' + h).slice(-2) + ':00', calls: act ? (h === 14 ? 5 : h === 15 ? 3 : 2) : 0, in: act ? 18000 : 0, out: act ? 2600 : 0, hit: act ? 4200 : 0, cost: act ? (h === 14 ? 0.42 : h === 15 ? 0.28 : 0.12) : 0 })
+    }
+    var days = []
+    for (var d = 13; d >= 0; d--) {
+      var v = [0.9, 1.2, 0.4, 2.1, 0.8, 1.5, 0.2, 1.8, 0.6, 1.1, 1.4, 0.7, 1.9, 0.5][d]
+      var dd = new Date(2026, 7, 14 - d)
+      days.push({ key: 'D' + d, label: ('0' + (dd.getMonth() + 1)).slice(-2) + '-' + ('0' + dd.getDate()).slice(-2), calls: Math.max(1, Math.round(v * 9)), in: Math.round(v * 90000), out: Math.round(v * 14000), hit: Math.round(v * 21000), cost: v })
+    }
+    bars(hours, document.getElementById('hoursBars'))
+    hours.slice().reverse().forEach(function (a) { if (a.calls > 0) document.getElementById('hoursRows').appendChild(aggRow(a)) })
+    aggTotal(hours, document.getElementById('hoursTotal'))
+    bars(days, document.getElementById('daysBars'))
+    days.slice().reverse().forEach(function (a) { document.getElementById('daysRows').appendChild(aggRow(a)) })
+    aggTotal(days, document.getElementById('daysTotal'))
+  })()
+
+  // ── 记录/小时/日 视图切换 ──
+  function setView(v) {
+    document.getElementById('view-records').style.display = v === 'records' ? '' : 'none'
+    document.getElementById('view-hours').style.display = v === 'hours' ? '' : 'none'
+    document.getElementById('view-days').style.display = v === 'days' ? '' : 'none'
+    document.querySelectorAll('.dsm-toolbar [data-view]').forEach(function (b) {
+      b.classList.toggle('on', b.dataset.view === v)
+    })
+    document.getElementById('demoToolbarTitle').querySelector('span').textContent = v === 'records' ? '任务记录' : '消耗统计'
+    document.getElementById('demoOnlySession').style.display = v === 'records' ? '' : 'none'
+  }
+  document.querySelectorAll('.dsm-toolbar [data-view]').forEach(function (b) {
+    b.addEventListener('click', function () { setView(b.dataset.view) })
+  })
+
   var saved = 'gilded'
   try { saved = localStorage.getItem('dsm-theme') || 'gilded' } catch (e) {}
   if (THEMES.indexOf(saved) < 0) saved = 'gilded'
   setTheme(saved)
+  setView('records')
 
   document.querySelectorAll('.demo-bar button').forEach(function (b) {
     b.addEventListener('click', function () { setTheme(b.dataset.t) })

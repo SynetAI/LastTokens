@@ -1,8 +1,8 @@
 {
   "pluginId": "apim-1",
   "name": "API 余额与任务消耗仪表盘",
-  "currentVersion": "v7.2.1",
-  "currentPackageId": "pkg-12",
+  "currentVersion": "v7.3",
+  "currentPackageId": "pkg-13",
   "exportedAt": "snapshot",
   "description": "DeepSeek Harness 动态 Cordis 插件：实时 API 余额查询、任务消耗记录（tokens/缓存命中/金额）、可拖动悬浮球与四主题悬浮仪表盘（极光/机甲/赛博/果冻）。",
   "packages": [
@@ -29,6 +29,8 @@
     { "packageId": "pkg-11", "name": "API 余额与任务消耗仪表盘 v7.2", "hasSource": false,
       "notes": "机甲/赛博主题全面重设计——机甲「钛金装甲·能量核心」（枪灰装甲板+橙色等离子能量、钢制螺栓、能量导管流光、能量槽扫光）、赛博「霓虹终端·数据流」（青/品红/紫三色数据环悬浮球、2×2 HUD 磁贴、点阵+透视网格、扫描光束、能量槽）；赛博新增能量槽，主题选择持久化到 localStorage" },
     { "packageId": "pkg-12", "name": "API 余额与任务消耗仪表盘 v7.2.1", "hasSource": true,
-      "notes": "极光/果冻主题悬浮球移除多余的外层光环（::before display:none），机甲/赛博保留各自装甲环/数据环 —— 本 zip 源码快照即此版本（packages/pkg-12）" }
+      "notes": "极光/果冻主题悬浮球移除多余的外层光环（::before display:none），机甲/赛博保留各自装甲环/数据环 —— 源码快照见 packages/pkg-12" },
+    { "packageId": "pkg-13", "name": "API 余额与任务消耗仪表盘 v7.3", "hasSource": true,
+      "notes": "消耗记录新增按小时/按日聚合视图（记录/小时/日分段切换：24h/14d 金额柱状图 + 逐时段列表 + 区间合计），每条记录显示所用单价（价 输入/缓存/输出），运行卡迷你条新增今日消耗；Host 维护全量日/小时聚合（独立于 200 条截断）—— 本 zip 源码快照即此版本（packages/pkg-13）" }
   ]
 }

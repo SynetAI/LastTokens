@@ -1,0 +1,17 @@
+{
+  "pluginId": "apim-1",
+  "packageId": "pkg-13",
+  "name": "API 余额与任务消耗仪表盘 v7.3",
+  "purpose": "v7.3：消耗记录新增按小时/按日聚合视图——记录区顶部分段切换（记录/小时/日）：小时视图为最近 24 小时金额柱状图 + 逐小时列表（调用数、in/out/缓存/tokens、金额），日视图为最近 14 天柱状图 + 逐日列表，两视图底部均有区间合计（调用数/tokens/金额）；每条任务记录新增「价 输入/缓存/输出」显示本次调用所用单价（元/百万tokens，含价格覆盖）；运行卡迷你条新增今日消耗。Host 侧按全量历史维护日/小时聚合（独立于 200 条记录截断，日保留 35 天、小时保留 60 小时），记录携带 prices 字段，snapshot 新增 daily/hourly 数组。",
+  "hasHostHalf": true,
+  "hasClientHalf": true,
+  "hostFile": "host.js",
+  "clientFile": "client.js",
+  "howToRebuild": "将 host.js 内容作为 cordis_define 的 code.host，client.js 内容作为 code.client，plugin.kind 为 existing + pluginId=apim-1 追加新版本；或 kind=new + idPrefix 创建全新插件。定义后调用 cordis_run（切换版本用 mode:'update'），并在运行卡片批准 Client 半。",
+  "themes": [
+    { "id": "aurora", "name": "极光 Aurora", "desc": "青紫玻璃 · 流光" },
+    { "id": "gilded", "name": "机甲 Mecha", "desc": "钛金装甲 · 能量核心" },
+    { "id": "cyber", "name": "赛博 Cyber", "desc": "霓虹终端 · 数据流" },
+    { "id": "mochi", "name": "果冻 Mochi", "desc": "粉蓝果冻 · 软萌" }
+  ]
+}

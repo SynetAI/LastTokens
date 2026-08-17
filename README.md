@@ -10,7 +10,12 @@
   `baseURL`/`apiKeyEnv` 覆盖），60s 自动刷新 + 手动刷新。
 - **任务消耗账本**：拦截 `llm/stream` 瀑布事件，为每次模型调用记录：
   `inputTokens / outputTokens / cacheReadTokens / cacheWriteTokens / reasoningTokens`、
-  耗时、用途（对话/压缩/标题）、状态、估算金额（内置价格表，可面板调整）。
+  耗时、用途（对话/压缩/标题）、状态、估算金额（内置价格表，可面板调整），
+  每条记录附带本次所用单价（输入/缓存/输出，元/百万 tokens）。
+- **消耗统计（v7.3）**：记录区顶部「记录 / 小时 / 日」分段切换——
+  小时视图 = 最近 24 小时金额柱状图 + 逐小时列表，日视图 = 最近 14 天柱状图 + 逐日列表，
+  均含区间合计（调用数 / tokens / 金额）。Host 按全量历史聚合，独立于 200 条记录截断；
+  运行卡迷你条新增「今日消耗」。
 - **悬浮球**：中心锚点定位，可拖拽；轮播 余额 → 消耗 → 缓存命中率 → 调用次数；
   请求进行中显示并发徽标。
 - **悬浮面板**：Hero 余额 + 缓存命中率环 + 2×2/自定义统计卡 + 最近 12 次消耗柱状图
@@ -26,21 +31,25 @@
 ## 文件结构
 
 ```
-manifest.json                  # 插件身份 + 全部版本（pkg-1 ~ pkg-12）元数据
-packages/pkg-12/meta.json      # 本包（v7.2.1）元数据与重建方式
-packages/pkg-12/host.js        # Host 半（code.host，plain JS function body）
-packages/pkg-12/client.js      # Client 半（code.client，完整单文件）
+manifest.json                  # 插件身份 + 全部版本（pkg-1 ~ pkg-13）元数据
+packages/pkg-13/meta.json      # 本包（v7.3）元数据与重建方式
+packages/pkg-13/host.js        # Host 半（code.host，plain JS function body）
+packages/pkg-13/client.js      # Client 半（code.client，完整单文件）
+packages/pkg-12/…              # 上一版 v7.2.1 源码快照
+packages/pkg-10/…              # v7.1 源码快照
 README.md
 ```
 
-> 注：本 zip 源码快照对应 **pkg-12 / v7.2.1**（机甲「钛金装甲·能量核心」、
-> 赛博「霓虹终端·数据流」+ 赛博能量槽 + 主题持久化 + 极光/果冻悬浮球外圈移除）。
+> 注：本 zip 源码快照对应 **pkg-13 / v7.3**（消耗记录新增按小时/按日聚合视图、
+> 每条记录显示所用单价、运行卡迷你条新增今日消耗；继承 v7.2 主题重设计与 v7.2.1 修复）。
 > 早期版本 pkg-1 ~ pkg-11 仅保留元数据；如需其源码，可在原 DSH 会话中用
 > `cordis_inspect_self('apim-1', '<packageId>')` 查询（动态插件源码仅存于进程内）。
 
 ## 重建方式（在 DSH 会话中）
 
-1. 打开 `packages/pkg-12/host.js` 与 `client.js`，分别取其完整内容。
+> 现成的粘贴式指令见 `APPLY.md`（把 host.js + client.js 交给主 Agent 重新 cordis_define 即可）。
+
+1. 打开 `packages/pkg-13/host.js` 与 `client.js`，分别取其完整内容。
 2. 调用 `cordis_define`：
    - 追加到原插件：`plugin: { kind: 'existing', pluginId: 'apim-1' }`
    - 或创建全新插件：`plugin: { kind: 'new', idPrefix: 'apim' }`
@@ -63,10 +72,11 @@ README.md
 | pkg-9 | v7 | 机甲主题重设计（装甲/铆钉/警示条纹/能量槽） |
 | pkg-10 | v7.1 | 修复球在页面顶端展开时面板被遮住（中心锚点视口钳制） |
 | pkg-11 | v7.2 | 机甲/赛博主题全面重设计：钛金装甲·能量核心 / 霓虹终端·数据流，赛博新增能量槽、主题持久化 |
-| pkg-12 | v7.2.1 | 极光/果冻悬浮球移除多余外层光环 —— 本 zip 源码快照 |
+| pkg-12 | v7.2.1 | 极光/果冻悬浮球移除多余外层光环 |
+| pkg-13 | v7.3 | 消耗记录新增按小时/按日聚合视图 + 每条记录显示所用单价 + 运行卡迷你条今日消耗 —— 本 zip 源码快照 |
 
 ## 数据契约（Host RPC）
 
-- `snapshot` → `{ inFlight, balance{state,currency,total,granted,toppedUp,updatedAt,error}, totals{calls,inputTokens,outputTokens,cacheReadTokens,cacheWriteTokens,reasoningTokens,cost}, records[], priceOverride }`
+- `snapshot` → `{ inFlight, balance{state,currency,total,granted,toppedUp,updatedAt,error}, totals{calls,inputTokens,outputTokens,cacheReadTokens,cacheWriteTokens,reasoningTokens,cost}, records[]{…, prices{input,hit,output}}, daily[{key,calls,cost,…}], hourly[{key,calls,cost,…}], priceOverride }`
 - `refresh-balance` → `{ balance }`
 - `set-prices` → `{ input, hit, output }`（元/百万 tokens）或 `{ reset: true }`
